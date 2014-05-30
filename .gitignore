@@ -1,2 +1,5 @@
 .idea/
 *.iml
+sea-modules
+dist
+_site

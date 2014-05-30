@@ -6,8 +6,12 @@
  * Released under Apache 2.0 license
  * http://apache.org/licenses/LICENSE-2.0.html
  */
-;
-(function ($, window, document, undefined) {
+
+// CMD wrapper
+var jQuery = require('jquery');
+module.exports = jQuery;
+
+(function($, window, document, undefined) {
 
     'use strict';
 
@@ -15,7 +19,7 @@
 
     // PROTOTYPE AND CONSTRUCTOR
 
-    var TwbsPagination = function (element, options) {
+    var TwbsPagination = function(element, options) {
         this.$element = $(element);
         this.options = $.extend({}, $.fn.twbsPagination.defaults, options);
         this.init(this.options);
@@ -25,7 +29,7 @@
 
         constructor: TwbsPagination,
 
-        init: function (options) {
+        init: function(options) {
             this.options = $.extend({}, this.options, options);
 
             if (this.options.startPage < 1 || this.options.startPage > this.options.totalPages) {
@@ -67,12 +71,12 @@
             return this;
         },
 
-        destroy: function () {
+        destroy: function() {
             this.$element.empty();
             return this;
         },
 
-        show: function (page) {
+        show: function(page) {
             if (page < 1 || page > this.options.totalPages) {
                 throw new Error('Page is incorrect.');
             }
@@ -84,7 +88,7 @@
             return this;
         },
 
-        buildListItems: function (pages) {
+        buildListItems: function(pages) {
             var $listItems = $();
 
             if (this.options.first) {
@@ -112,7 +116,7 @@
             return $listItems;
         },
 
-        buildItem: function (type, page) {
+        buildItem: function(type, page) {
             var itemContainer = $('<li></li>'),
                 itemContent = $('<a></a>'),
                 itemText = null;
@@ -144,7 +148,7 @@
             return itemContainer;
         },
 
-        getPages: function (currentPage) {
+        getPages: function(currentPage) {
             var pages = [];
 
             var half = Math.floor(this.options.visiblePages / 2);
@@ -167,15 +171,18 @@
                 itPage++;
             }
 
-            return {"currentPage": currentPage, "numeric": pages};
+            return {
+                "currentPage": currentPage,
+                "numeric": pages
+            };
         },
 
-        render: function (pages) {
+        render: function(pages) {
             this.$listContainer.children().remove();
             this.$listContainer.append(this.buildListItems(pages));
 
             this.$listContainer.find('.page').removeClass('active');
-            this.$listContainer.find('.page').filter(function () {
+            this.$listContainer.find('.page').filter(function() {
                 return $(this).data('page') === pages.currentPage;
             }).addClass('active');
 
@@ -200,19 +207,19 @@
                 .toggleClass('disabled', pages.currentPage === this.options.totalPages);
         },
 
-        setupEvents: function () {
+        setupEvents: function() {
             var base = this;
-            this.$listContainer.find('li').each(function () {
+            this.$listContainer.find('li').each(function() {
                 var $this = $(this);
                 $this.off();
                 if ($this.hasClass('disabled') || $this.hasClass('active')) return;
-                $this.click(function () {
+                $this.click(function() {
                     base.show(parseInt($this.data('page'), 10));
                 });
             });
         },
 
-        equals: function (arr1, arr2) {
+        equals: function(arr1, arr2) {
             var i = 0;
             while ((i < arr1.length) || (i < arr2.length)) {
                 if (arr1[i] !== arr2[i]) {
@@ -223,7 +230,7 @@
             return true;
         },
 
-        href: function (c) {
+        href: function(c) {
             return this.options.href.replace(this.options.hrefVariable, c);
         }
 
@@ -231,7 +238,7 @@
 
     // PLUGIN DEFINITION
 
-    $.fn.twbsPagination = function (option) {
+    $.fn.twbsPagination = function(option) {
         var args = Array.prototype.slice.call(arguments, 1);
         var methodReturn;
 
@@ -239,13 +246,13 @@
         var data = $this.data('twbs-pagination');
         var options = typeof option === 'object' && option;
 
-        if (!data) $this.data('twbs-pagination', (data = new TwbsPagination(this, options) ));
-        if (typeof option === 'string') methodReturn = data[ option ].apply(data, args);
+        if (!data) $this.data('twbs-pagination', (data = new TwbsPagination(this, options)));
+        if (typeof option === 'string') methodReturn = data[option].apply(data, args);
 
-        return ( methodReturn === undefined ) ? $this : methodReturn;
+        return (methodReturn === undefined) ? $this : methodReturn;
     };
-    
-    $.fn.resetPaging = function () {
+
+    $.fn.resetPaging = function() {
         $(this).data('twbs-pagination', null);
     };
 
@@ -265,7 +272,7 @@
 
     $.fn.twbsPagination.Constructor = TwbsPagination;
 
-    $.fn.twbsPagination.noConflict = function () {
+    $.fn.twbsPagination.noConflict = function() {
         $.fn.twbsPagination = old;
         return this;
     };
