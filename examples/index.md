@@ -17,6 +17,8 @@ seajs.use('index',function(Pager){
                //alert(page);
                // a bug
             }
+        }).on('all',function(event,a){
+            console.log(event,a);
         });
 });
 ````
