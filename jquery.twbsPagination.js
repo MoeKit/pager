@@ -9,7 +9,8 @@
 
 // CMD wrapper
 var $ = require('jquery');
-var Events = require('events');
+var Events = require('eventor');
+require('./pager.css');
 
 //@todo support only show prev and next button
 //@todo update function
@@ -21,7 +22,7 @@ var Events = require('events');
 var defaults = {
     totalPages: 0,
     startPage: 1,
-    visiblePages: 5,
+    visiblePages: 10,
     href: 'javascript:void(0);',
     hrefVariable: '{{number}}',
     first: '首页',
@@ -29,6 +30,7 @@ var defaults = {
     next: '下一页',
     last: '最后一页',
     paginationClass: 'mk-pagination',
+    paginationItemClass: 'mk-pagination-item',
     onPageClick: null,
     showFirst: true,// if show first btn
     showLast: true, // if show last btn
@@ -141,6 +143,10 @@ Pager.prototype.buildItem = function (type, page) {
         itemText = null;
 
     itemContainer.addClass(type);
+    // I just cannot simply change another class name..
+    if (type === 'page') {
+        itemContainer/*.removeClass('page')*/.addClass('mk-pagination-item');
+    }
     itemContainer.data('page', page);
 
     switch (type) {
@@ -200,8 +206,8 @@ Pager.prototype.render = function (pages) {
     this.$listContainer.children().remove();
     this.$listContainer.append(this.buildListItems(pages));
 
-    this.$listContainer.find('.page').removeClass('active');
-    this.$listContainer.find('.page').filter(function () {
+    this.$listContainer.find('.mk-pagination-item').removeClass('active');
+    this.$listContainer.find('.mk-pagination-item').filter(function () {
         return $(this).data('page') === pages.currentPage;
     }).addClass('active');
 

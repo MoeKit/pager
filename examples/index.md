@@ -13,6 +13,7 @@ seajs.use('index',function(Pager){
             totalPages: 35,
             visiblePages: 7,
             startPage: 5,
+            paginationClass: 'mk-pagination mk-pagination-sz',
             onPageClick: function (event, page) {
                //alert(page);
                // a bug
