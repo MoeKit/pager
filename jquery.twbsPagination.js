@@ -10,7 +10,8 @@
 // CMD wrapper
 var $ = require('jquery');
 var Events = require('eventor');
-require('./pager.css');
+/*
+require('./twbspager.css');*/
 
 //@todo support only show prev and next button
 //@todo update function
@@ -61,7 +62,7 @@ Pager.prototype.init = function (options) {
     }
 
     if (this.options.onPageClick instanceof Function) {
-        this.$element.bind('page', this.options.onPageClick);
+        this.$element.bind('ui-pager-page', this.options.onPageClick);
     }
 
     var tagName = (typeof this.$element.prop === 'function') ?
@@ -84,7 +85,7 @@ Pager.prototype.init = function (options) {
     this.trigger('init');
 
     if (this.options.triggerClickOnInt) {
-        this.$element.trigger('page', this.options.startPage);
+        this.$element.trigger('ui-pager-page', this.options.startPage);
     }
 
     return this;
@@ -104,7 +105,7 @@ Pager.prototype.show = function (page) {
     this.render(this.getPages(page));
     this.setupEvents();
 
-    this.$element.trigger('page', page);
+    this.$element.trigger('ui-pager-page', page);
     this.trigger('show', page);
     return this;
 };
@@ -122,7 +123,7 @@ Pager.prototype.buildListItems = function (pages) {
     }
 
     for (var i = 0; i < pages.numeric.length; i++) {
-        $listItems = $listItems.add(this.buildItem('page', pages.numeric[i]));
+        $listItems = $listItems.add(this.buildItem('ui-pager-page', pages.numeric[i]));
     }
 
     if (this.options.next) {
@@ -144,13 +145,13 @@ Pager.prototype.buildItem = function (type, page) {
 
     itemContainer.addClass(type);
     // I just cannot simply change another class name..
-    if (type === 'page') {
-        itemContainer/*.removeClass('page')*/.addClass('mk-pagination-item');
+    if (type === 'ui-pager-page') {
+        itemContainer/*.removeClass('page')*/.addClass(this.options.paginationItemClass);
     }
-    itemContainer.data('page', page);
+    itemContainer.data('ui-pager-page', page);
 
     switch (type) {
-        case 'page':
+        case 'ui-pager-page':
             itemText = page;
             break;
         case 'first':
@@ -206,9 +207,9 @@ Pager.prototype.render = function (pages) {
     this.$listContainer.children().remove();
     this.$listContainer.append(this.buildListItems(pages));
 
-    this.$listContainer.find('.mk-pagination-item').removeClass('active');
-    this.$listContainer.find('.mk-pagination-item').filter(function () {
-        return $(this).data('page') === pages.currentPage;
+    this.$listContainer.find('.'+this.options.paginationClass).removeClass('active');
+    this.$listContainer.find('.'+this.options.paginationItemClass).filter(function () {
+        return $(this).data('ui-pager-page') === pages.currentPage;
     }).addClass('active');
 
     if (pages.currentPage === 1) {
@@ -239,7 +240,7 @@ Pager.prototype.setupEvents = function () {
         $this.off();
         if ($this.hasClass('disabled') || $this.hasClass('active')) return;
         $this.click(function () {
-            base.show(parseInt($this.data('page'), 10));
+            base.show(parseInt($this.data('ui-pager-page'), 10));
         });
     });
 };

@@ -1,8 +1,8 @@
 {
   "name": "pager",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "homepage": "http://esimakin.github.io/twbs-pagination/",
-  "repository": "https://github.com/MoeKit/pager",
+  "repository": "https://github.com/yyydao/pager",
   "license": {
     "type": "Apache 2.0",
     "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -11,7 +11,7 @@
     "main": "index.js",
     "dependencies": {
       "jquery": "1.8.3",
-      "eventor": "0.0.1"
+      "eventor": "0.0.3"
     }
   }
 }
