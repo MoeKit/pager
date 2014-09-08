@@ -9,7 +9,6 @@
 
 ````javascript
 seajs.use('index',function(Pager){
-    console.log(Pager);
     new Pager({
             target:'#demo-1',
             totalPages: 35,
@@ -37,7 +36,6 @@ seajs.use('index',function(Pager){
 
 ````javascript
 seajs.use('index',function(Pager){
-    console.log(Pager);
     new Pager({
             target:'#demo-2',
             totalPages: 35,
