@@ -4,7 +4,7 @@
   "homepage": "http://esimakin.github.io/twbs-pagination/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MoeKit/page"
+    "url": "https://github.com/MoeKit/pager"
   },
   "license": {
     "type": "Apache 2.0",
