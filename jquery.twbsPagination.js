@@ -106,7 +106,7 @@ Pager.prototype.show = function (page) {
     this.setupEvents();
 
     this.$element.trigger('ui-pager-page', page);
-    this.trigger('show', page);
+    this.trigger('show', page, page===1, page===this.options.totalPages);
     return this;
 };
 
