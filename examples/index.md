@@ -9,7 +9,6 @@
 
 ````javascript
 seajs.use('index',function(Pager){
-    console.log(Pager);
     new Pager({
             target:'#demo-1',
             totalPages: 35,
@@ -18,11 +17,10 @@ seajs.use('index',function(Pager){
             paginationClass: 'ui-pager-pg',
             paginationItemClass: 'ui-pager-item',
             onPageClick: function (event, page) {
-               //alert(page);
-               // a bug
+               alert(page);
             }
-        }).on('all',function(event,a){
-            console.log(event,a);
+        }).on('show',function(page,isFirst,isLast){
+            console.log(page,isFirst,isLast);
         });
 });
 ````
@@ -37,7 +35,6 @@ seajs.use('index',function(Pager){
 
 ````javascript
 seajs.use('index',function(Pager){
-    console.log(Pager);
     new Pager({
             target:'#demo-2',
             totalPages: 35,
