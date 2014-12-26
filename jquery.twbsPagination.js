@@ -10,13 +10,8 @@
 // CMD wrapper
 var $ = require('jquery');
 var Events = require('eventor');
-/*
-require('./twbspager.css');*/
 
-//@todo support only show prev and next button
 //@todo update function
-//@todo hide pre when it is the first page
-//@todo hide next when it is the last page
 //@destroy method
 
 // PROTOTYPE AND CONSTRUCTOR
@@ -30,11 +25,15 @@ var defaults = {
     prev: '上一页',
     next: '下一页',
     last: '最后一页',
+    nlChange:false,
     paginationClass: 'mk-pagination',
     paginationItemClass: 'mk-pagination-item',
     onPageClick: null,
+    autoHide:false,
     showFirst: true,// if show first btn
     showLast: true, // if show last btn
+    showPrev:true,
+    showNext:true,
     triggerClickOnInt: false // it may cause page crash if set to true when bind onclick callback not carefully
 };
 var Pager = function (options) {
@@ -113,28 +112,49 @@ Pager.prototype.show = function (page) {
 Pager.prototype.buildListItems = function (pages) {
     var $listItems = $();
 
-    if (this.options.first && this.options.showFirst) {
-        $listItems = $listItems.add(this.buildItem('first', 1));
-    }
+    if(this.options.pfChange){
+        if (this.options.prev && this.options.showPrev) {
+            var prev = pages.currentPage > 1 ? pages.currentPage - 1 : 1;
+            $listItems = $listItems.add(this.buildItem('prev', prev));
+        }
 
-    if (this.options.prev) {
-        var prev = pages.currentPage > 1 ? pages.currentPage - 1 : 1;
-        $listItems = $listItems.add(this.buildItem('prev', prev));
+        if (this.options.first && this.options.showFirst) {
+            $listItems = $listItems.add(this.buildItem('first', 1));
+        }
+    }else{
+        if (this.options.first && this.options.showFirst) {
+            $listItems = $listItems.add(this.buildItem('first', 1));
+        }
+
+        if (this.options.prev && this.options.showPrev) {
+            var prev = pages.currentPage > 1 ? pages.currentPage - 1 : 1;
+            $listItems = $listItems.add(this.buildItem('prev', prev));
+        }
     }
 
     for (var i = 0; i < pages.numeric.length; i++) {
         $listItems = $listItems.add(this.buildItem('ui-pager-page', pages.numeric[i]));
     }
 
-    if (this.options.next) {
-        var next = pages.currentPage >= this.options.totalPages ? this.options.totalPages : pages.currentPage + 1;
-        $listItems = $listItems.add(this.buildItem('next', next));
-    }
+    if(this.options.nlChange){
+        if (this.options.last && this.options.showLast) {
+            $listItems = $listItems.add(this.buildItem('last', this.options.totalPages));
+        }
+        if (this.options.next) {
+            var next = pages.currentPage >= this.options.totalPages ? this.options.totalPages : pages.currentPage + 1;
+            $listItems = $listItems.add(this.buildItem('next', next));
+        }
+    }else{
+        if (this.options.next) {
+            var next = pages.currentPage >= this.options.totalPages ? this.options.totalPages : pages.currentPage + 1;
+            $listItems = $listItems.add(this.buildItem('next', next));
+        }
 
-    if (this.options.last && this.options.showLast) {
-        $listItems = $listItems.add(this.buildItem('last', this.options.totalPages));
-    }
+        if (this.options.last && this.options.showLast) {
+            $listItems = $listItems.add(this.buildItem('last', this.options.totalPages));
+        }
 
+    }
     return $listItems;
 };
 
@@ -164,6 +184,9 @@ Pager.prototype.buildItem = function (type, page) {
             itemText = this.options.next;
             break;
         case 'last':
+            if(this.options.visiblePages+1===this.options.totalPages){
+                this.options.last = this.options.last.match(/(\d+)/)[0]
+            }
             itemText = this.options.last;
             break;
         default:
@@ -212,13 +235,46 @@ Pager.prototype.render = function (pages) {
         return $(this).data('ui-pager-page') === pages.currentPage;
     }).addClass('active');
 
-    if (pages.currentPage === 1) {
-        this.$listContainer.find('.prev a,.first a').attr("href", "javascript:void(0);");
+    var minFirstHide,maxLastHide;
+    minFirstHide = Math.ceil(this.options.visiblePages/2+1);
+    maxLastHide = Math.floor(this.options.totalPages-this.options.visiblePages/2);
+
+
+    if(pages.currentPage<minFirstHide||this.options.totalPages<=this.options.visiblePages){
+        this.$listContainer.find('.first').hide();
     }
 
-    if (pages.currentPage === this.options.totalPages) {
-        this.$listContainer.find('.next a,.last a').attr("href", "javascript:void(0);");
+    if (pages.currentPage === 1) {
+        this.$listContainer.find('.prev a,.first a').attr("href", "javascript:void(0);");
+        if(this.options.autoHide===true){
+            this.$listContainer.find('.prev').hide();
+
+        }
     }
+
+    if(this.options.totalPages<=this.options.visiblePages){
+
+        this.$listContainer.find('.last').hide();
+        if (pages.currentPage === this.options.totalPages) {
+            this.$listContainer.find('.next a,.last a').attr("href", "javascript:void(0);");
+            if(this.options.autoHide===true){
+                this.$listContainer.find('.next').hide();
+            }
+        }
+    }else{
+        if(pages.currentPage>maxLastHide){
+            this.$listContainer.find('.last').hide();
+        }
+
+        if (pages.currentPage === this.options.totalPages) {
+            this.$listContainer.find('.next a,.last a').attr("href", "javascript:void(0);");
+            if(this.options.autoHide===true){
+                this.$listContainer.find('.next').hide();
+            }
+        }
+    }
+
+
 
     this.$listContainer.find('.first')
         .toggleClass('disabled', pages.currentPage === 1);
