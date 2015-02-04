@@ -252,7 +252,7 @@ Pager.prototype.render = function (pages) {
         }
     }
 
-    if(this.options.totalPages<=this.options.visiblePages){
+    if(this.options.totalPages<=this.options.visiblePages){//总页数小于可见页数时
 
         this.$listContainer.find('.last').hide();
         if (pages.currentPage === this.options.totalPages) {
@@ -262,10 +262,11 @@ Pager.prototype.render = function (pages) {
             }
         }
     }else{
-        if(pages.currentPage>maxLastHide){
+        //最大页数等于最后一个分页时，隐藏去最后页
+        if(this.options.totalPages===pages.numeric.pop()){
             this.$listContainer.find('.last').hide();
         }
-
+        //最后页时隐藏去下一页
         if (pages.currentPage === this.options.totalPages) {
             this.$listContainer.find('.next a,.last a').attr("href", "javascript:void(0);");
             if(this.options.autoHide===true){

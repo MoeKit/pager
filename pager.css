@@ -6,12 +6,14 @@
     line-height: 26px;
     background-color: #f3f3f3;
     border: 1px solid #f3f3f3;
+    font-family: \5FAE\8F6F\96C5\9ED1;
 }
 
 .ui-pager .ui-pager-pg .ui-pager-current,.ui-pager-item.active, .ui-pager-item.active > a {
     background-color: #ff7fa6;
     border-color: #ff7fa6;
     color: #fff;
+    font-weight: bold;
 }
 
 .ui-pager .ui-pager-pg a.ui-pager-next, .ui-pager .ui-pager-pg a.prev, .pgb a {
