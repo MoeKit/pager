@@ -7,6 +7,13 @@
 [Documentation](http://esimakin.github.io/twbs-pagination/)
 
 ### Changelog
+v1.1.6
+- 完善`destroy`方法
+- 新版 SPM demo规范
+  
+v1.1.5
+- href配置
+  
 v1.1.4
 - Seedit论坛风格,
 
