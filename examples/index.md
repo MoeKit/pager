@@ -9,20 +9,20 @@
 <div id="demo-2" class="ui-pager clearfix"></div>
 
 ````javascript
-seajs.use('index',function(Pager){
-    new Pager({
-            target:'#demo-2',
-            totalPages: 35,
-            visiblePages: 7,
-            startPage: 5,
-            paginationClass: 'mk-pagination mk-pagination-sz',
-            onPageClick: function (event, page) {
-               //alert(page);
-               // a bug
-            }
-        }).on('all',function(event,a){
-            console.log(event,a);
-        });
-});
+var Pager = require('pager');
+new Pager({
+        target:'#demo-2',
+        totalPages: 35,
+        visiblePages: 7,
+        startPage: 5,
+        paginationClass: 'mk-pagination mk-pagination-sz',
+        onPageClick: function (event, page) {
+           //alert(page);
+           // a bug
+        }
+    }).on('all',function(event,a){
+        console.log(event,a);
+    });
 ````
+
 ---

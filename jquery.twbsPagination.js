@@ -8,6 +8,8 @@
  */
 
 // CMD wrapper
+"use strict";
+
 var $ = require('jquery');
 var Events = require('eventor');
 
@@ -34,12 +36,14 @@ var defaults = {
     showLast: true, // if show last btn
     showPrev:true,
     showNext:true,
+    preventDefalut:true,
     triggerClickOnInt: false // it may cause page crash if set to true when bind onclick callback not carefully
 };
 var Pager = function (options) {
     this.$element = $(options.target);
     this.options = $.extend({}, defaults, options);
     this.init(this.options);
+
 };
 
 // mixin
@@ -92,6 +96,12 @@ Pager.prototype.init = function (options) {
 
 Pager.prototype.destroy = function () {
     this.$element.empty();
+    Pager = function(){};
+    //off掉绑定在.ui-pager-page的onPageClick相关函数
+    this.$element.off('ui-pager-page');
+    this.$element = {};
+    this. $listContainer = {};
+    this.options = {};
     this.trigger('destroy');
     return this;
 };
@@ -111,10 +121,11 @@ Pager.prototype.show = function (page) {
 
 Pager.prototype.buildListItems = function (pages) {
     var $listItems = $();
+    var prev,next;
 
     if(this.options.pfChange){
         if (this.options.prev && this.options.showPrev) {
-            var prev = pages.currentPage > 1 ? pages.currentPage - 1 : 1;
+            prev = pages.currentPage > 1 ? pages.currentPage - 1 : 1;
             $listItems = $listItems.add(this.buildItem('prev', prev));
         }
 
@@ -127,7 +138,7 @@ Pager.prototype.buildListItems = function (pages) {
         }
 
         if (this.options.prev && this.options.showPrev) {
-            var prev = pages.currentPage > 1 ? pages.currentPage - 1 : 1;
+            prev = pages.currentPage > 1 ? pages.currentPage - 1 : 1;
             $listItems = $listItems.add(this.buildItem('prev', prev));
         }
     }
@@ -141,12 +152,12 @@ Pager.prototype.buildListItems = function (pages) {
             $listItems = $listItems.add(this.buildItem('last', this.options.totalPages));
         }
         if (this.options.next) {
-            var next = pages.currentPage >= this.options.totalPages ? this.options.totalPages : pages.currentPage + 1;
+            next = pages.currentPage >= this.options.totalPages ? this.options.totalPages : pages.currentPage + 1;
             $listItems = $listItems.add(this.buildItem('next', next));
         }
     }else{
         if (this.options.next) {
-            var next = pages.currentPage >= this.options.totalPages ? this.options.totalPages : pages.currentPage + 1;
+            next = pages.currentPage >= this.options.totalPages ? this.options.totalPages : pages.currentPage + 1;
             $listItems = $listItems.add(this.buildItem('next', next));
         }
 
@@ -185,7 +196,7 @@ Pager.prototype.buildItem = function (type, page) {
             break;
         case 'last':
             if(this.options.visiblePages+1===this.options.totalPages){
-                this.options.last = this.options.last.match(/(\d+)/)[0]
+                this.options.last = this.options.last.match(/(\d+)/)[0];
             }
             itemText = this.options.last;
             break;
@@ -275,8 +286,6 @@ Pager.prototype.render = function (pages) {
         }
     }
 
-
-
     this.$listContainer.find('.first')
         .toggleClass('disabled', pages.currentPage === 1);
 
@@ -295,7 +304,14 @@ Pager.prototype.setupEvents = function () {
     this.$listContainer.find('li').each(function () {
         var $this = $(this);
         $this.off();
-        if ($this.hasClass('disabled') || $this.hasClass('active')) return;
+        if(base.options.preventDefault){
+            $this.find('a').on('click', function (e) {
+                e.preventDefault();
+            });
+        }
+        if ($this.hasClass('disabled') || $this.hasClass('active')){
+            return;
+        }
         $this.click(function () {
             base.show(parseInt($this.data('ui-pager-page'), 10));
         });

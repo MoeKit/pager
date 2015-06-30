@@ -1,7 +1,7 @@
 {
   "name": "pager",
-  "version": "1.1.5",
-  "homepage": "http://esimakin.github.io/twbs-pagination/",
+  "version": "1.1.6",
+  "homepage": "https://github.com/MoeKit/pager",
   "repository": {
     "type": "git",
     "url": "https://github.com/MoeKit/pager"

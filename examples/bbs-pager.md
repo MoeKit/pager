@@ -10,29 +10,28 @@
 
 
 ````javascript
-seajs.use('index',function(Pager){
-    var total = 32,visible = 6;
-    new Pager({
-            target:'#demo-bbs',
-            totalPages: total,
-            visiblePages: visible,
-            startPage: 1,
-            paginationClass: 'ui-pager-pg',
-            paginationItemClass: 'ui-pager-item',
-            first:'1...',
-            prev:'<',
-            last:'...'+total,
-            next:' > ',
-            pfChange:true,          
-            nlChange:true,          
-            autoHide:true,          
-            onPageClick: function (event, page) {
-               alert(page);
-            }
-        }).on('show',function(page,isFirst,isLast){
-            console.log(page,isFirst,isLast);
-        });
-});
+var Pager = require('pager');
+var total = 32,visible = 6;
+new Pager({
+        target:'#demo-bbs',
+        totalPages: total,
+        visiblePages: visible,
+        startPage: 1,
+        paginationClass: 'ui-pager-pg',
+        paginationItemClass: 'ui-pager-item',
+        first:'1...',
+        prev:'<',
+        last:'...'+total,
+        next:' > ',
+        pfChange:true,          
+        nlChange:true,          
+        autoHide:true,          
+        onPageClick: function (event, page) {
+           alert(page);
+        }
+    }).on('show',function(page,isFirst,isLast){
+        console.log(page,isFirst,isLast);
+    });
 ````
 
 ---
@@ -49,24 +48,21 @@ seajs.use('index',function(Pager){
  </div>
  
 ````javascript
-seajs.use('index',function(Pager){
-    new Pager({
-            target:'.sync-pagination',
-            totalPages: 35,
-            visiblePages: 7,
-            startPage: 5,
-             paginationItemClass: 'ui-pager-item',
-             showFirst:false,
-             showPrev:false,
-            onPageClick: function (event, page) {
-               //alert(page);
-               // a bug
-            }
-        }).on('all',function(event,a){
-            console.log(event,a);
-        });
-});
+var Pager = require('pager');
+new Pager({
+        target:'.sync-pagination',
+        totalPages: 35,
+        visiblePages: 7,
+        startPage: 5,
+         paginationItemClass: 'ui-pager-item',
+         showFirst:false,
+         showPrev:false,
+        onPageClick: function (event, page) {
+           //alert(page);
+           // a bug
+        }
+    }).on('all',function(event,a){
+        console.log(event,a);
+    });
 ````
-
 ---
-
