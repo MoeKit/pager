@@ -4,7 +4,7 @@
 
 ### jQuery pagination plugin (bootstrap powered)
 
-[Documentation](http://esimakin.github.io/twbs-pagination/)
+[Documentation](https://moekit.timo.today/package/pager)
 
 ### Changelog
 v1.1.6
