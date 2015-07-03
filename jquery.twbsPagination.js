@@ -96,7 +96,6 @@ Pager.prototype.init = function (options) {
 
 Pager.prototype.destroy = function () {
     this.$element.empty();
-    Pager = function(){};
     //off掉绑定在.ui-pager-page的onPageClick相关函数
     this.$element.off('ui-pager-page');
     this.$element = {};
